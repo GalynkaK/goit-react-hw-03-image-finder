@@ -21,20 +21,28 @@ export class App extends Component {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
+
     this.setState({ isLoading: true });
+
     const inputSearch = e.target && e.target.elements && e.target.elements.inputSearch;
     if (!inputSearch || inputSearch.value.trim() === '') {
+      this.setState({ isLoading: false });
       return;
     }
-    const response = await getImage(inputSearch.value, 1);
-    this.setState({
-      images: response,
-      isLoading: false,
-      currentSearch: inputSearch.value,
-      page: 1,
-    });
-  };
 
+    try {
+      const response = await getImage(inputSearch.value, 1);
+      this.setState({
+        images: response,
+        isLoading: false,
+        currentSearch: inputSearch.value,
+        page: 1,
+      });
+    } catch (error) {
+      console.log(error);
+      this.setState({ isLoading: false });
+    }
+  };
 
   handleClickMore = async () => {
     const response = await getImage(

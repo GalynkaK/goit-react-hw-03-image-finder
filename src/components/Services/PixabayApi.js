@@ -11,7 +11,7 @@ export const getImage = async (name, page) => {
   return response.data.hits.map(image => {
     return {
       id: image.id,
-      webFormatURL: image.webFormatURL,
+      webformatURL: image.webformatURL,
       largeImageURL: image.largeImageURL,
       tags: image.tags,
     };
