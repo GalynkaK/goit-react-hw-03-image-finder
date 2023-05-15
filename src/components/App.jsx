@@ -15,6 +15,7 @@ export class App extends Component {
     modalOpen: false,
     modalImg: '',
     modalAlt: '',
+    totalHits: 0
   };
 
   handleSubmit = async e => {
@@ -33,10 +34,11 @@ export class App extends Component {
     try {
       const response = await getImage(inputSearch.value, 1);
       this.setState({
-        images: response,
+        images: response.images,
         isLoading: false,
         currentSearch: inputSearch.value,
         page: 1,
+        totalHits: response.totalHits
       });
     } catch (error) {
       console.log(error);
@@ -50,11 +52,10 @@ export class App extends Component {
       this.state.page + 1
     );
     this.setState({
-      images: [...this.state.images, ...response],
+      images: [...this.state.images, ...response.images],
       page: this.state.page + 1,
     });
   };
-
   handleImageClick = e => {
     this.setState({
       modalOpen: true,
@@ -100,7 +101,7 @@ export class App extends Component {
               onImageClick={this.handleImageClick}
               images={this.state.images}
             />
-            {this.state.images.length > 0 ? (
+            {this.state.images.length > 0 && this.state.images.length < this.state.totalHits ? (
               <Button onClick={this.handleClickMore} />
             ) : null}
           </React.Fragment>
